@@ -3,6 +3,19 @@ import json
 from pathlib import Path
 
 
+class Config(dict):
+    
+    def __init__(self, fp, encoding='utf-8', *args, **kwargs):
+        self.fp = fp
+        self.encoding = encoding
+        super().__init__(*args, **kwargs)
+
+    def read(self, *arg, **kwargs):
+        return self.io.read(*args, **kwargs)
+
+    def write(self, *arg, **kwargs):
+        return self.io.write(*args, **kwargs)
+
 class JsonConfig:
 
     def __init__(self, path=Path(), options={}, encoding='utf-8', empty='{}'):
