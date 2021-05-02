@@ -87,7 +87,7 @@ from pathlib import Path
 
 from invoke import task
 
-from configadmin import JsonConfig
+from configadmins import JsonConfigAdmin
 
 REPO_ROOT = Path(__file__).parent
 PYTHON_PATH = Path(sys.executable)
@@ -98,7 +98,7 @@ VSCODE_SETTINGS_PYTHON = {
     "python.linting.enabled": True,
     "python.linting.pylintEnabled": False,
     "python.linting.flake8Enabled": True,
-    "python.linting.flake8Args": ["--max-line-length=160"],
+    "python.linting.flake8Args": ["--max-line-length=88"],
     "python.formatting.provider": "black",
 }
 
@@ -116,35 +116,25 @@ SECRETS = {
 
 @task
 def setdefaultconfig(c):
-    python = JsonConfig(
+    JsonConfigAdmin(
         path=REPO_ROOT / ".vscode" / "settings.json", options=VSCODE_SETTINGS_PYTHON
-    )
-    python.live()
-    python.setdefault()
-    vue = JsonConfig(
-        path=REPO_ROOT / ".vscode" / "settings.json", options=VSCODE_SETTINGS_PYTHON
-    )
-    vue.live()
-    vue.setdefault()
-    secrets = JsonConfig(path=REPO_ROOT / "secrets.json", options=SECRETS)
-    secrets.live()
-    secrets.setdefault()
+    ).live().setdefault()
+    JsonConfigAdmin(
+        path=REPO_ROOT / ".vscode" / "settings.json", options=VSCODE_SETTINGS_VUE
+    ).live().setdefault()
+    JsonConfigAdmin(
+        path=REPO_ROOT / "secrets.json", options=SECRETS
+    ).live().setdefault()
 
 
 @task
 def updateconfig(c):
-    python = JsonConfig(
+    JsonConfigAdmin(
         path=REPO_ROOT / ".vscode" / "settings.json", options=VSCODE_SETTINGS_PYTHON
-    )
-    python.live()
-    python.update()
-    vue = JsonConfig(
-        path=REPO_ROOT / ".vscode" / "settings.json", options=VSCODE_SETTINGS_PYTHON
-    )
-    vue.live()
-    vue.update()
-    secrets = JsonConfig(path=REPO_ROOT / "secrets.json", options=SECRETS)
-    secrets.live()
-    secrets.update()
+    ).live().update()
+    JsonConfigAdmin(
+        path=REPO_ROOT / ".vscode" / "settings.json", options=VSCODE_SETTINGS_VUE
+    ).live().update()
+    JsonConfigAdmin(path=REPO_ROOT / "secrets.json", options=SECRETS).live().update()
 
 ```
