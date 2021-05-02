@@ -1,14 +1,13 @@
 # configadmin
  Admin your config easily
 
-# Overview 🖼
+# Overview
 
 configadmins.py
 ```python
 import json
 from pathlib import Path
 
-...
 class JsonConfigAdmin:
     def __init__(self, path=Path(), options={}, encoding="utf-8", empty="{}"):
         self.path = path
